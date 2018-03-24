@@ -41,7 +41,7 @@ from six.moves import queue
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
-PI_URL = 'PI_URL' # Remember to replace this line!!
+PI_URL = 'PI_URL HERE' # Remember to replace this line!!
 
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
