@@ -27,42 +27,25 @@ def forward():
   controller.forward()
   return jsonify(success=True)
 
-@app.route('/left')
-def left():
-  controller.left(6)
-  return jsonify(success=True)
+"""
+TODO: 
+Define API for /left, /right, /stop event
+Refer the /forward example above for hint
+"""
 
-@app.route('/right')
-def right():
-  controller.right(6)
-  return jsonify(success=True)
-    
-@app.route('/stop')
-def stop():
-  controller.stop()
-  return jsonify(success=True)
 
 @app.route('/rfid')
 def on_rfid():
-  controller.stop()
-  if mode == 'text':
-    result = camera.recognize().lower().rstrip()
-    cmd = result2cmd(result)
-    if cmd == 'left':
-      controller.left(4)
-    elif cmd == 'right':
-      controller.right(4)
-
+  """
+  TODO: 
+  Handle request from rfid.
+  Speech mode:
+    Nothing to do 
+  CV mode:
+    Camera captures image and gets command from recognized result
+  """
   return jsonify(success=True)
 
-def result2cmd(result):
-  res_list = result.split('\n')
-  for item in res_list:
-    if item in 'left':
-      return 'left'
-    elif item in 'right':
-      return 'right'
-  return None
 
 if __name__ == '__main__':
   gpio.setmode(gpio.BCM)

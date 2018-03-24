@@ -41,7 +41,7 @@ from six.moves import queue
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
-PI_URL = 'http://192.168.24.2:8000' # Remember to replace this line!!
+PI_URL = 'PI_URL' # Remember to replace this line!!
 
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
@@ -153,11 +153,9 @@ def listen_print_loop(responses):
 
         else:
             print(transcript)
-            url = cmd2url(transcript)
-            if url != None:
-              requests.get(url)
-             
-            #print(transcript + overwrite_chars)
+            """
+	    Make requests to RPi here!!
+	    """
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
@@ -166,17 +164,6 @@ def listen_print_loop(responses):
 
             num_chars_printed = 0
 
-def cmd2url(transcript):
-    if '前進' in transcript:
-      return PI_URL + '/go'
-    elif '停' in transcript:
-      return PI_URL + '/stop'
-    elif '左轉' in transcript:
-      return PI_URL + '/left'
-    elif '右轉' in transcript:
-      return PI_URL + ' /right'
-    else: 
-      return None
 
 def main():
     # See http://g.co/cloud/speech/docs/languages

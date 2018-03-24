@@ -9,6 +9,8 @@ class Controller(object):
     gpio.setup(self.motor, gpio.OUT)
     gpio.setup(servo_pin, gpio.OUT)
     self.servo = gpio.PWM(servo_pin, 50)
+
+    # Please replace these values below with tuned ones
     self.middle_val = 8.3
     self.left_val = self.middle_val - 1.8
     self.right_val = self.middle_val + 1.8
@@ -33,4 +35,4 @@ class Controller(object):
     gpio.output(self.motor, 0)
 
   def cleanup(self):
-	  gpio.cleanup()
+    gpio.cleanup()

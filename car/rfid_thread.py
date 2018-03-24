@@ -26,12 +26,10 @@ class rfid_thread(threading.Thread):
         exit(-1)
     print('[RFID]', 'stopped')
   
- # def end_read(self, signal, frame):
-  #  print()
-  #  self.reading = False
-  #  gpio.cleanup()
-
   def read(self):
+    """
+    Once the reader detect a card, emit a http request to server to make the car stop.
+    """
     OK = self.rfid.MI_OK
     (status, tag_type) = self.rfid.MFRC522_Request(self.rfid.PICC_REQIDL)
     
@@ -40,7 +38,6 @@ class rfid_thread(threading.Thread):
     if status == OK:
       if uid != self.last_uid:
         print('[RFID]', 'Card detected')
-        requests.get('http://localhost:5000/rfid')
         self.last_uid = uid
       else:
         pass
