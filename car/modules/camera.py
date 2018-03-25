@@ -63,5 +63,16 @@ class Camera(object):
     Please refer to azure documentation for hint
     
     """
+    url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/RecognizeText'
+    headers = {'Ocp-Apim-Subscription-Key': self.sub_key, 'Content-Type': 'application/octet-stream'}
+    params = { 'handwriting': True }
+    r = requests.post(url, headers=headers, params=params, data=data)
+    result_url = r.headers['Operation-Location']
+    result = self.process_request('get', url=result_url, headers=headers)
+    print(result)
+    return self.extract_handwritten_json(result)
+#    response = process_request(req_type='get', url, headers=None, params=None, data=None)
+
+
     return ''
     

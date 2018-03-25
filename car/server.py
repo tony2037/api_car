@@ -11,7 +11,7 @@ from modules.controller import Controller
 from rfid_thread import rfid_thread
 
 mode = sys.argv[1]
-SUBSCRIPTION_KEY = 'PUT SUBSCRIPTION KEY HERE'
+SUBSCRIPTION_KEY = 'fe2e8c9089114086b7c54cf36aecd23c'
 if mode == 'text':
   camera = Camera(SUBSCRIPTION_KEY)
 
@@ -33,6 +33,22 @@ Define API for /left, /right, /stop event
 Refer the /forward example above for hint
 """
 
+@app.route('/left')
+def left():
+  controller.left(1000)
+  return jsonify(success=True)
+
+
+@app.route('/right')
+def right():
+  controller.right(1000)
+  return jsonify(success=True)
+
+
+@app.route('/stop')
+def stop():
+  controller.stop()
+  return jsonify(success=True)
 
 @app.route('/rfid')
 def on_rfid():
@@ -44,6 +60,14 @@ def on_rfid():
   CV mode:
     Camera captures image and gets command from recognized result
   """
+  controller.stop()
+  if mode == 'text':
+    result = camera.recognize().lower().rstrip()
+    cmd = result2cmd(result)
+    if cmd == 'left':
+      controller.left(4)
+    elif cmd == 'right':
+      controller.right(4)
   return jsonify(success=True)
 
 
@@ -52,7 +76,7 @@ if __name__ == '__main__':
   rfid = rfid_thread('makentu')
   try:
     rfid.start()
-    app.run(host='0.0.0.0', threaded=True, debug=False)
+    app.run(host='0.0.0.0',port=1111, threaded=True, debug=False)
   except KeyboardInterrupt:
     print('Interrupt, Exiting...')
   finally:
