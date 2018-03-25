@@ -6,10 +6,17 @@ from datetime import datetime
 class Camera(object):
   def __init__(self, sub_key):
     self.sub_key = sub_key # subcription key
+    print("success create a Camera object")
 
   def recognize_frame(self, frame):
-    _, img = cv2.imencode('.jpg', frame)
 
+   # _, img = cv2.imencode('.jpg', frame)
+    h = len(frame)
+    w = len(frame[0])
+    cropped = frame[int(h*0.25):int(h*0.75), :]
+    cropped = frame
+    _, img = cv2.imencode('.jpg', cropped)
+    cv2.imwrite('test.jpg', cropped)
     # Uncomment the next line if you want to check the image captured
     # cv2.imwrite('test.jpg', frame)
     return self.handwritten_request(img.tostring())
@@ -72,7 +79,13 @@ class Camera(object):
     print(result)
     return self.extract_handwritten_json(result)
 #    response = process_request(req_type='get', url, headers=None, params=None, data=None)
-
-
-    return ''
-    
+  def extract_handwritten_json(self, data):
+    if len(data['recognitionResult']) > 0:
+      result = ''
+      lines = data['recognitionResult']['lines']
+      for obj in lines:
+        result += ' '.join(list(map(lambda box: box['text'], obj['words'])))
+        result += '\n'
+      return result
+    else:
+      return None 

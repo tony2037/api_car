@@ -12,6 +12,7 @@ from rfid_thread import rfid_thread
 
 mode = sys.argv[1]
 SUBSCRIPTION_KEY = 'fe2e8c9089114086b7c54cf36aecd23c'
+camera = None
 if mode == 'text':
   camera = Camera(SUBSCRIPTION_KEY)
 
@@ -68,6 +69,16 @@ def on_rfid():
       controller.left(4)
     elif cmd == 'right':
       controller.right(4)
+  return jsonify(success=True)
+
+
+@app.route('/camera')
+def camera():
+  
+  controller.stop()
+  if mode == 'text':
+    result = camera.recognize()
+    print(result)
   return jsonify(success=True)
 
 
