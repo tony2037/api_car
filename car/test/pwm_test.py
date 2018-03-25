@@ -4,11 +4,13 @@ gpio.setmode(gpio.BCM)
 gpio.setup(18, gpio.OUT)
 servo = gpio.PWM(18, 50)
 
-print('Pwm test for servo. Press Ctrl+C to exit.)
+print('Pwm test for servo. Press Ctrl+C to exit.')
 
 while True:
   try:
     inp = float(input('Input servo: '))
+    if inp < 1 or inp > 10:
+      raise ValueError
     servo.start(inp)
   except KeyboardInterrupt:
     print('\nExiting...')
