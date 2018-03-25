@@ -16,7 +16,7 @@ class Controller(object):
     self.right_val = self.middle_val + 1.8
 
   def forward(self):
-    gpio.outpute(self.motor, 1)
+    gpio.output(self.motor, 1)
     self.servo.start(self.middle_val)
 
   def left(self, turn_time):
